@@ -15,8 +15,9 @@ public class FlowPublisher {
     private static final long SLEEP_TIME_SECOND = 3000L;
     private static final Logger log = LogManager.getLogger();
 
+    //A slow Second subscriber and a limited buffer size on the publisher's side,
+    // dropping current element if buffer is full for more than MAX_BUFFER_TIME
     public void runSubscriptions() {
-        //A slow Second subscriber and a limited buffer size on the publisher's side
         final SubmissionPublisher<Integer> publisher =
                 new SubmissionPublisher<>(ForkJoinPool.commonPool(), MAX_BUFFER_CAPACITY);
         final FlowSubscriber firstSubscriber = new FlowSubscriber(SLEEP_TIME_FIRST, FlowSubscriber.FIRST);

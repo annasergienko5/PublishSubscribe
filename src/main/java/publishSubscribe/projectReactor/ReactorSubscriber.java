@@ -3,7 +3,6 @@ package publishSubscribe.projectReactor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reactivestreams.Subscription;
-import reactor.core.Exceptions;
 import reactor.core.publisher.BaseSubscriber;
 
 import java.util.stream.IntStream;
@@ -50,7 +49,6 @@ public class ReactorSubscriber extends BaseSubscriber<Integer> {
     @Override
     protected void hookOnError(Throwable throwable) {
         log("Error occurred: " + throwable.getMessage());
-        throw Exceptions.errorCallbackNotImplemented(throwable);
     }
 
     @Override

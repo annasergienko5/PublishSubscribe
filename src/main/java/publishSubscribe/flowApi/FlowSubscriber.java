@@ -9,12 +9,12 @@ import java.util.stream.IntStream;
 public class FlowSubscriber implements Flow.Subscriber<Integer> {
     public static final String FIRST = "First";
     public static final String SECOND = "Second";
-    private static final Logger log = LogManager.getLogger();
     private final long sleepTime;
     private final String subscriberName;
     private Flow.Subscription subscription;
     private int nextValueExpected;
     private int totalAmount;
+    private static final Logger log = LogManager.getLogger();
 
     public FlowSubscriber(final long sleepTime, final String subscriberName) {
         this.sleepTime = sleepTime;
@@ -41,7 +41,6 @@ public class FlowSubscriber implements Flow.Subscriber<Integer> {
         takeSomeRest();
         nextValueExpected++;
         totalAmount++;
-
         log("Next value should be: " + nextValueExpected);
         subscription.request(1);
     }
