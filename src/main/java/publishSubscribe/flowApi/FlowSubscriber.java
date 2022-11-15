@@ -6,20 +6,20 @@ import org.apache.logging.log4j.Logger;
 import java.util.concurrent.Flow;
 import java.util.stream.IntStream;
 
-public class Subscriber implements Flow.Subscriber<Integer> {
+public class FlowSubscriber implements Flow.Subscriber<Integer> {
     public static final String FIRST = "First";
     public static final String SECOND = "Second";
     private static final Logger log = LogManager.getLogger();
     private final long sleepTime;
     private final String subscriberName;
     private Flow.Subscription subscription;
-    private int nextNumberExpected;
+    private int nextValueExpected;
     private int totalAmount;
 
-    Subscriber(final long sleepTime, final String subscriberName) {
+    public FlowSubscriber(final long sleepTime, final String subscriberName) {
         this.sleepTime = sleepTime;
         this.subscriberName = subscriberName;
-        this.nextNumberExpected = 1;
+        this.nextValueExpected = 1;
         this.totalAmount = 0;
     }
 
@@ -30,19 +30,19 @@ public class Subscriber implements Flow.Subscriber<Integer> {
     }
 
     @Override
-    public void onNext(final Integer number) {
-        if (number != nextNumberExpected) {
-            IntStream.range(nextNumberExpected, number).forEach(
-                    (msgNumber) -> log("Number " + msgNumber + " was dropped")
+    public void onNext(final Integer value) {
+        if (value != nextValueExpected) {
+            IntStream.range(nextValueExpected, value).forEach(
+                    (msgNumber) -> log("Value " + msgNumber + " was dropped")
             );
-            nextNumberExpected = number;
+            nextValueExpected = value;
         }
-        log("Got a new number: " + number);
+        log("Got a new value: " + value);
         takeSomeRest();
-        nextNumberExpected++;
+        nextValueExpected++;
         totalAmount++;
 
-        log("Next number should be: " + nextNumberExpected);
+        log("Next value should be: " + nextValueExpected);
         subscription.request(1);
     }
 
@@ -53,7 +53,7 @@ public class Subscriber implements Flow.Subscriber<Integer> {
 
     @Override
     public void onComplete() {
-        log("Completed. In total " + totalAmount + " magazines.");
+        log("Completed. In total " + totalAmount + " values");
     }
 
     private void log(final String logMessage) {
